@@ -8,4 +8,6 @@
 
 ## Misc. Tasks
 - Normalize attributes?
+- Choose optimal number of neurons
+- Choose number of layers
 - ...
