@@ -11,3 +11,13 @@
 - Choose optimal number of neurons
 - Choose number of layers
 - ...
+
+
+##Task Assignments
+- Dennis: Forward propagation
+
+- Melissa: Backpropagation
+
+- Rowan: Data/handle input
+
+- Sophie: Test Suite
