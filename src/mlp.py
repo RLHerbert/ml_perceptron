@@ -19,7 +19,7 @@ def __foward_prop(hidden_layer, output_layer, attribute_vector):
         # keep track of the output of the hidden layer
         hidden_layer_output.append(__sigmoid(swixi))
 
-    # go through each ouput layer node
+    # go through each output layer node
     for output_node in output_layer:
         swixi = 0
         # go through each hidden node's output
