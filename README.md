@@ -20,7 +20,7 @@ CECS 550 Project 2 - Multi Layer Perceptron
 
 ## Usage
 Follow these steps to run the program:
-1. Navigate to the `ml_perceptron` in your terminal emulator of choice.
+1. Navigate to the `ml_perceptron` folder in your terminal emulator of choice.
 2. Run Python3 by typing and entering `Python3 src/main.py` in your terminal.
 3. [TODO] ... (pipe to output?)
 
