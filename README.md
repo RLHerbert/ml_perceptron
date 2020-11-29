@@ -19,6 +19,9 @@ CECS 550 Project 2 - Multi Layer Perceptron
 - An installation of `Python3` which can be found [here](https://www.python.org/downloads/).
 
 ## Usage
+Cloning from GitHub:
+- You can `Git` clone the GitHub repo with `git clone https://github.com/RLHerbert/ml_perceptron.git`.
+
 Follow these steps to run the program:
 1. Navigate to the `ml_perceptron` folder in your terminal emulator of choice.
 2. Run Python3 by typing and entering `Python3 src/main.py` in your terminal.
