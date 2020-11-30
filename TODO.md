@@ -18,6 +18,6 @@
 
 - Melissa: (1) Backpropagation, (2) train()
 
-- Rowan: (1) Data/handle input, (2) constructor()
+- Rowan: (1) Data/handle input, (2) __init__()
 
 - Sophie: (1 & 2) getClassification()
