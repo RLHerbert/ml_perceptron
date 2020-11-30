@@ -15,7 +15,6 @@ def backpropagation(hidden_layer, output_layer, output_vector, target_vector, hi
 
 	output_layer = output_layer + eta*np.multiply(np.array([output_responsibility,]*num_hid).transpose(), hidden_vector)
 	hidden_layer = hidden_layer + eta*np.multiply(np.array([hidden_responsibility,]*num_out).transpose(), attribute_vector)
-	print(np.array([hidden_responsibility,]*num_out).transpose())
 
 	return hidden_layer, output_layer
 
