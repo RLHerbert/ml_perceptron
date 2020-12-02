@@ -14,10 +14,10 @@
 
 
 ##Task Assignments
-- Dennis: Forward propagation
+- Dennis: (1) Forward propagation, (2) print results/output to file
 
-- Melissa: Backpropagation
+- Melissa: (1) Backpropagation, (2) train()
 
-- Rowan: Data/handle input
+- Rowan: (1) Data/handle input, (2) __init__()
 
-- Sophie: Test Suite
+- Sophie: (1 & 2) getClassification()
