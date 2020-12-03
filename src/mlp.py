@@ -1,12 +1,15 @@
 import math
 import numpy as np
+from random import uniform
+
 
 
 class mlp:
     def __init__(self, n_inputs, n_hidden_nodes, n_outputs):
         self.__n_inputs = n_inputs
-        self.__n_hidden_nodes = n_hidden_nodes
-        self.__n_outputs = n_outputs
+        # initial weights 
+        self.hidden_layer = [{'weights':[uniform(-1.0, 1.0)  for i in range(n_inputs + 1)]} for i in range(n_hidden_nodes)]
+        self.output_layer = [{'weights':[uniform(-1.0, 1.0)  for i in range(n_hidden_nodes + 1)]} for i in range(n_outputs)]
         self.output_neurons = self.train()
 
     def train(self):
@@ -114,3 +117,5 @@ if __name__ == "__main__":
     print("output nodes: ", backprop_results[1])
 
  
+    print(MLP.hidden_layer)
+    print(MLP.output_layer)
