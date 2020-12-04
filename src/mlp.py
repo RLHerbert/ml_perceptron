@@ -1,28 +1,39 @@
 import math
 import numpy as np
 from random import uniform
+from data import get_vectors
 
 
 
 class mlp:
-    def __init__(self, n_inputs, n_hidden_nodes, n_outputs):
+    def __init__(self, n_hidden_nodes, n_outputs): #, n_inputs):
+        data = get_vectors()["training"]
+        n_inputs = len(data[0]) - 2
         self.__n_inputs = n_inputs
+        self.__n_outputs = n_outputs
+        self.__n_hidden_nodes = n_hidden_nodes
         # initial weights 
         self.hidden_layer = [{'weights':[uniform(-1.0, 1.0)  for i in range(n_inputs + 1)]} for i in range(n_hidden_nodes)]
         self.output_layer = [{'weights':[uniform(-1.0, 1.0)  for i in range(n_hidden_nodes + 1)]} for i in range(n_outputs)]
-        self.output_neurons = self.train()
+        self.output_neurons = self.train(get_vectors()["training"])
 
-    def train(self):
-        pass
+    def train(self, dataset):
+        output_vector = np.array(self.__n_outputs)
+        hidden_vector = np.array(self.__n_hidden_nodes)
+        for example in dataset:
+            attribute_vector = example[1:len(example)-1]
+            self._forward_prop(self.hidden_layer, self.output_layer, attribute_vector)
+            self._backprop(self.hidden_layer, self.output_layer, output_vector, dataset[:][len(example)-1], hidden_vector, attribute_vector)
+        return output_vector
 
     def get_classification(self):
-        return self.__get_classification(output_neurons)
+        return self.__get_classification(self.output_neurons)
 
     def print_weights(self):
         #or output to file?? idk what to call this one
         pass
 
-    def _forward_prop(self,hidden_layer, output_layer, attribute_vector):
+    def _forward_prop(self, hidden_layer, output_layer, attribute_vector):
         hidden_layer_output = []
         output_layer_output = []
 
@@ -31,7 +42,7 @@ class mlp:
             swixi = 0
             # go through each attribute
             for i in range(len(attribute_vector)):
-                swixi += attribute_vector[i] * hidden_node[i]
+                swixi += attribute_vector[i] * hidden_node["weights"][i]
 
             # keep track of the output of the hidden layer
             hidden_layer_output.append(self.__sigmoid(swixi))
@@ -41,7 +52,7 @@ class mlp:
             swixi = 0
             # go through each hidden node's output
             for i in range(len(hidden_layer_output)):
-                swixi += hidden_layer_output[i] * output_node[i]
+                swixi += hidden_layer_output[i] * output_node["weights"][i]
 
             # keep track of the output of the output layer
             output_layer_output.append(self.__sigmoid(swixi))
@@ -58,17 +69,18 @@ class mlp:
         target_vector = np.array(target_vector)
         hidden_vector = np.array(hidden_vector)
         attribute_vector = np.array(attribute_vector)
-        num_hid = len(hidden_vector)
-        num_out = len(output_vector)
+        num_hid = self.__n_hidden_nodes
+        num_out = self.__n_outputs
 
-        output_responsibility = np.multiply(np.multiply(output_vector, (1 - output_vector)), (target_vector - output_vector))
-        hidden_responsibility = np.multiply(np.multiply(hidden_vector, (1 - hidden_vector)), output_responsibility.dot(output_layer))
+        print(hidden_vector.shape)
 
-        output_layer = output_layer + eta*np.multiply(np.array([output_responsibility,]*num_hid).transpose(), hidden_vector)
-        hidden_layer = hidden_layer + eta*np.multiply(np.array([hidden_responsibility,]*num_out).transpose(), attribute_vector)
+        output_responsibility = np.outer(np.outer(output_vector, (1 - output_vector)), (target_vector - output_vector))
+        hidden_responsibility = np.outer(np.outer(hidden_vector, (1 - hidden_vector)), output_responsibility.dot(output_layer))
+
+        output_layer = output_layer + eta*np.outer(np.array([output_responsibility,]*num_hid).transpose(), hidden_vector)
+        hidden_layer = hidden_layer + eta*np.outer(np.array([hidden_responsibility,]*num_out).transpose(), attribute_vector)
 
         return hidden_layer, output_layer
-
 
     def __get_classification(self, output_neurons):
         # classifier chooses the class whose output neuron has return the highest value 
@@ -89,7 +101,8 @@ if __name__ == "__main__":
 
     attribute_vector = [0.8, 0.1]
 
-    MLP = mlp(2,2,2)
+    # MLP = mlp(2,2,2)
+    MLP = mlp(5, 8)
 
     forward_prop_results =  MLP._forward_prop(hidden_layer, output_layer, attribute_vector)
     # Hidden node outputs
