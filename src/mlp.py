@@ -16,6 +16,8 @@ class mlp:
         self.hidden_layer = [{'weights':[uniform(-1.0, 1.0)  for i in range(n_inputs + 1)]} for i in range(n_hidden_nodes)]
         self.output_layer = [{'weights':[uniform(-1.0, 1.0)  for i in range(n_hidden_nodes + 1)]} for i in range(n_outputs)]
         self.output_neurons = self.train(get_vectors()["training"])
+        # number of epochs
+        self.n_epochs = 0
 
     def train(self, dataset):
         output_vector = np.array(self.__n_outputs)
