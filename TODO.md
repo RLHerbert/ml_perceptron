@@ -14,7 +14,7 @@
 
 
 ##Task Assignments
-- Dennis: (1) Forward propagation, (2) print results/output to file, (3) output
+- Dennis: (1) Forward propagation, (2) print results/output to file, (3) output, return epoch
 
 - Melissa: (1) Backpropagation, (2) train(), (3) fix backprop()
 
