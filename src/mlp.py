@@ -29,11 +29,18 @@ class mlp:
             
             # target vector for each example follows 80% 20% 
             # attribute_vector = dataset[:][len(example)-1]
+            print("elf.hidden_layer_weight ", len(self.hidden_layer_weight), len(self.hidden_layer_weight[0]))
+            # print(self.hidden_layer_weight)
+
+            print("self.output_layer_weight ", len(self.output_layer_weight), len(self.output_layer_weight[0]))
 
             attribute_vector = example[1:len(example)-1]
             target_vector = self.__getTarget_vec(example) 
 
             hidden_layer_neurons, output_layer_neurons = self._forward_prop(self.hidden_layer_weight, self.output_layer_weight, attribute_vector)
+            print("hidden_layer_neurons ", hidden_layer_neurons)
+            print("output_layer_neurons  ", output_layer_neurons )
+            print("-----------")
             self.hidden_layer_weight, self.output_layer_weight = self._backprop(self.hidden_layer_weight, self.output_layer_weight, 
                                                                 output_layer_neurons,target_vector , hidden_layer_neurons, attribute_vector)
 
@@ -56,9 +63,9 @@ class mlp:
         target_vec = [0 for i in range(0,8)]
         example_label = self.__get_label(example)
         target_vec[example_label-1] = 0.8
-        for el in target_vec: 
-            if el == 0:
-                el = 0.2
+        for i in range(len(target_vec)): 
+            if target_vec[i] == 0:
+                target_vec[i] = 0.2
 
         return target_vec
 
