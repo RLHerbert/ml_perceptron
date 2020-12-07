@@ -21,7 +21,7 @@ class mlp:
     # train in 1 epoch
     def train(self, dataset):
         for example in dataset:       
-            print("elf.hidden_layer_weight ", len(self.hidden_layer_weight), len(self.hidden_layer_weight[0]))
+            print("self.hidden_layer_weight ", len(self.hidden_layer_weight), len(self.hidden_layer_weight[0]))
             print("self.output_layer_weight ", len(self.output_layer_weight), len(self.output_layer_weight[0]))
             attribute_vector = example[1:len(example)-1]
             # target vector for each example follows 80% 20% 
