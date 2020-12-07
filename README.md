@@ -6,7 +6,6 @@
 ## **Project Contents** - File Hierarchy
 - `ml_perceptron/`
   - `src/`
-    - `backprop.py`
     - `data.py`
       - Contains methods for retrieving the vectors needed for the training and validation of the program.
     - `main.py`
