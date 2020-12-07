@@ -1,6 +1,6 @@
 # **CECS 550 Project 2 - Multi Layer Perceptron**
 ## **Team**: *Classy Fire*
-### **Team Members**: Sophanna Ek, Melissa Hazlewood, Rowan Herbert, Dennis La
+### **Team Members**: [Sophanna Ek](https://github.com/sophannaek), [Melissa Hazlewood](https://github.com/melissahazlewood), [Rowan Herbert](https://github.com/RLHerbert), [Dennis La](https://github.com/depla)
 
 #
 ## **Project Contents** - File Hierarchy
