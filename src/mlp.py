@@ -4,7 +4,6 @@ from random import uniform
 from data import get_vectors
 
 
-
 class mlp:
     def __init__(self, n_hidden_nodes, n_outputs):
         data = get_vectors()["training"]
@@ -28,12 +27,13 @@ class mlp:
             # target vector for each example follows 80% 20% 
             target_vector = self.__getTarget_vec(example) 
 
-            hidden_layer_neurons, output_layer_neurons = self._forward_prop(self.hidden_layer_weight, self.output_layer_weight, attribute_vector)
+            hidden_layer_neurons, output_layer_neurons = self._forward_prop(
+                self.hidden_layer_weight, self.output_layer_weight, attribute_vector)
             print("hidden_layer_neurons ", hidden_layer_neurons)
-            print("output_layer_neurons  ", output_layer_neurons )
+            print("output_layer_neurons  ", output_layer_neurons)
             print("-----------")
-            self.hidden_layer_weight, self.output_layer_weight = self._backprop(self.hidden_layer_weight, self.output_layer_weight, 
-                                                                output_layer_neurons,target_vector , hidden_layer_neurons, attribute_vector)
+            self.hidden_layer_weight, self.output_layer_weight = self._backprop(self.hidden_layer_weight, self.output_layer_weight,
+                                                                                output_layer_neurons, target_vector, hidden_layer_neurons, attribute_vector)
 
         return hidden_layer_weight, output_layer_weight
 
@@ -46,20 +46,20 @@ class mlp:
         return self.__get_classification(self.output_neurons)
 
     def print_weights(self):
-        #or output to file?? idk what to call this one
+        # or output to file?? idk what to call this one
         pass
-    
 
-    # Return the label of each example 
+    # Return the label of each example
+
     def __get_label(self, example):
         return example[len(example)-1]
 
-    # Return target vector of each example vector using 80% 20% 
+    # Return target vector of each example vector using 80% 20%
     def __getTarget_vec(self, example):
-        target_vec = [0 for i in range(0,8)]
+        target_vec = [0 for i in range(0, 8)]
         example_label = self.__get_label(example)
         target_vec[example_label-1] = 0.8
-        for i in range(len(target_vec)): 
+        for i in range(len(target_vec)):
             if target_vec[i] == 0:
                 target_vec[i] = 0.2
 
@@ -68,8 +68,8 @@ class mlp:
     # Return (hidden_weight, output_weights) and (hidden_neurons, output_neurons)
     def _forward_prop(self, hidden_layer, output_layer, attribute_vector):
         hidden_layer_output = []
-        output_layer_output= []
-        
+        output_layer_output = []
+
         # go through each hidden layer node
         for hidden_node in hidden_layer:
             # print("hidden node ", hidden_node)
@@ -96,7 +96,6 @@ class mlp:
     def __sigmoid(self, swixi):
         return 1/(1 + math.pow(math.e, -swixi))
 
-    
     def _backprop(self, hidden_layer_weight, output_layer_weight, output_layer_neurons, target_vector, hidden_layer_neurons, attribute_vector, eta=0.1):
         hidden_layer_weight = np.array(hidden_layer_weight)
         output_layer_weight = np.array(output_layer_weight)
@@ -114,7 +113,9 @@ class mlp:
         hidden_responsibility = np.multiply(np.multiply(hidden_layer_neurons, (1 - hidden_layer_neurons)), output_responsibility.dot(output_layer_weight))
         print('hidden_responsibility ', hidden_responsibility)
 
-        output_layer_weight = output_layer_weight + eta*np.multiply(np.array([output_responsibility,]*num_hid).transpose(), hidden_layer_neurons)
+        output_layer_weight = output_layer_weight + eta * \
+            np.multiply(np.array([output_responsibility, ]
+                                 * num_hid).transpose(), hidden_layer_neurons)
         print('output_layer_weight ', output_layer_weight)
 
         hidden_layer_weight = hidden_layer_weight + eta*np.multiply(np.array([hidden_responsibility,]*num_in).transpose(), attribute_vector)
@@ -145,10 +146,10 @@ class mlp:
 
     #     return hidden_layer, output_layer
 
-
     def __get_classification(self, output_neurons):
-        # classifier chooses the class whose output neuron has return the highest value 
+        # classifier chooses the class whose output neuron has return the highest value
         return output_neurons.index(max(output_neurons)) + 1
+
 
 if __name__ == "__main__":
     # Testing forward propagation
@@ -165,15 +166,13 @@ if __name__ == "__main__":
 
     attribute_vector = [0.8, 0.1]
 
-  
     # MLP = mlp(2,2)
     # forward_prop_results =  MLP._forward_prop(hidden_layer_weight, output_layer_weight, attribute_vector)
     # # Hidden node outputs
     # print(forward_prop_results[0])
     # # Output node outputs
     # print(forward_prop_results[1])
- 
-    
+
     # # Testing backpropagation
     # # Example from Table 5.3 in Kubat
     # hidden_layer = [ [-1.0, 1.0],
@@ -195,7 +194,5 @@ if __name__ == "__main__":
 
  
    
-
-
 
     MLP = mlp(5, 8)
