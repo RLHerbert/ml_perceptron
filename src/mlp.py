@@ -8,33 +8,24 @@ from data import get_vectors
 class mlp:
     def __init__(self, n_hidden_nodes, n_outputs):
         data = get_vectors()["training"]
-        n_inputs = len(data[0]) - 2
-        self.__n_inputs = n_inputs
+        self.__n_inputs = len(data[0]) - 2
         self.__n_outputs = n_outputs
         self.__n_hidden_nodes = n_hidden_nodes
         # initial weights 
-        self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(n_inputs)] for i in range(n_hidden_nodes)]
+        self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_inputs)] for i in range(n_hidden_nodes)]
         self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(n_hidden_nodes)] for i in range(n_outputs)]
         
         self.output_neurons = self.train(get_vectors()["training"])
         # number of epochs
         self.n_epochs = 0
 
+    # train in 1 epoch
     def train(self, dataset):
-
-        for example in dataset:
-            
-            # self._forward_prop(self.hidden_layer, self.output_layer, attribute_vector)
-            # self._backprop(self.hidden_layer, self.output_layer, output_vector, dataset[:][len(example)-1], hidden_vector, attribute_vector)
-            
-            # target vector for each example follows 80% 20% 
-            # attribute_vector = dataset[:][len(example)-1]
+        for example in dataset:       
             print("elf.hidden_layer_weight ", len(self.hidden_layer_weight), len(self.hidden_layer_weight[0]))
-            # print(self.hidden_layer_weight)
-
             print("self.output_layer_weight ", len(self.output_layer_weight), len(self.output_layer_weight[0]))
-
             attribute_vector = example[1:len(example)-1]
+            # target vector for each example follows 80% 20% 
             target_vector = self.__getTarget_vec(example) 
 
             hidden_layer_neurons, output_layer_neurons = self._forward_prop(self.hidden_layer_weight, self.output_layer_weight, attribute_vector)
@@ -45,6 +36,11 @@ class mlp:
                                                                 output_layer_neurons,target_vector , hidden_layer_neurons, attribute_vector)
 
         return hidden_layer_weight, output_layer_weight
+
+
+    # TO DO: A complete train -- require tolerance when to stop training
+    def training(self, dataset):
+        return 
 
     def get_classification(self):
         return self.__get_classification(self.output_neurons)
@@ -198,14 +194,7 @@ if __name__ == "__main__":
     # print("output nodes: ", backprop_results[1])
 
  
-    # print(MLP.hidden_layer)
-    # print(MLP.output_layer)
-    # for i in MLP.hidden_layer: 
-    #     print('----------')
-    #     print(i)
-    # for output in MLP.output_layer:
-    #     print('***********')
-    #     print(output)
+   
 
 
 
