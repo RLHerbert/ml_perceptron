@@ -44,7 +44,7 @@ class mlp:
             self.hidden_layer_weight, self.output_layer_weight = self._backprop(self.hidden_layer_weight, self.output_layer_weight, 
                                                                 output_layer_neurons,target_vector , hidden_layer_neurons, attribute_vector)
 
-        return hidden_layer_weight
+        return hidden_layer_weight, output_layer_weight
 
     def get_classification(self):
         return self.__get_classification(self.output_neurons)
@@ -121,12 +121,9 @@ class mlp:
         output_layer_weight = output_layer_weight + eta*np.multiply(np.array([output_responsibility,]*num_hid).transpose(), hidden_layer_neurons)
         print('output_layer_weight ', output_layer_weight)
 
-
-        # To Do: need to debug here!!!! size are not matched? 
         hidden_layer_weight = hidden_layer_weight + eta*np.multiply(np.array([hidden_responsibility,]*num_in).transpose(), attribute_vector)
 
         return hidden_layer_weight, output_layer_weight
-
 
 
 
