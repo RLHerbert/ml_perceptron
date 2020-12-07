@@ -112,10 +112,7 @@ class mlp:
         # num_out = self.__n_outputs
 
         num_hid = hidden_layer_neurons.size
-        num_out = output_layer_neurons.size
-        print('num hid' ,num_hid)
-        print('num out ', num_out)
-   
+        num_in = self.__n_inputs 
         
         output_responsibility = np.multiply(np.multiply(output_layer_neurons, (1 - output_layer_neurons)), (target_vector - output_layer_neurons))
         hidden_responsibility = np.multiply(np.multiply(hidden_layer_neurons, (1 - hidden_layer_neurons)), output_responsibility.dot(output_layer_weight))
@@ -126,7 +123,7 @@ class mlp:
 
 
         # To Do: need to debug here!!!! size are not matched? 
-        hidden_layer_weight = hidden_layer_weight + eta*np.multiply(np.array([hidden_responsibility,]*num_out).transpose(), attribute_vector)
+        hidden_layer_weight = hidden_layer_weight + eta*np.multiply(np.array([hidden_responsibility,]*num_in).transpose(), attribute_vector)
 
         return hidden_layer_weight, output_layer_weight
 
