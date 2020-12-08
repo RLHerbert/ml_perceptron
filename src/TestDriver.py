@@ -23,6 +23,7 @@ def print_weights(init_hidden_weights, init_ouput_weights,
 
 
 def print_epochs():
+    #print(self.epochs)
     pass
 
 
