@@ -2,6 +2,8 @@ import math
 import numpy as np
 from random import uniform
 from data import get_vectors
+import sys
+
 
 
 
@@ -12,43 +14,73 @@ class mlp:
         self.__n_outputs = n_outputs
         self.__n_hidden_nodes = n_hidden_nodes
         # initial weights 
-        self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_inputs)] for i in range(n_hidden_nodes)]
-        self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(n_hidden_nodes)] for i in range(n_outputs)]
-        
-        self.output_neurons = self.train(get_vectors()["training"])
+        self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_inputs)] for i in range(self.__n_hidden_nodes)]
+        self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_hidden_nodes)] for i in range(self.__n_outputs)]
         # number of epochs
         self.n_epochs = 0
+        # multipercentron weights after training
+        self.training_weights = self.__train(get_vectors()['training'])
+               
 
-    # train in 1 epoch
-    def train(self, dataset):
+
+    # return the classification of each test example
+    def get_classification(self, example):
+        return self.__get_classification(example)
+
+    # TODO
+    def print_weights(self):
+        #or output to file?? idk what to call this one
+        pass
+
+
+    
+    def __train(self, dataset):
         for example in dataset:       
-            print("elf.hidden_layer_weight ", len(self.hidden_layer_weight), len(self.hidden_layer_weight[0]))
-            print("self.output_layer_weight ", len(self.output_layer_weight), len(self.output_layer_weight[0]))
             attribute_vector = example[1:len(example)-1]
             # target vector for each example follows 80% 20% 
             target_vector = self.__getTarget_vec(example) 
 
-            hidden_layer_neurons, output_layer_neurons = self._forward_prop(self.hidden_layer_weight, self.output_layer_weight, attribute_vector)
-            print("hidden_layer_neurons ", hidden_layer_neurons)
-            print("output_layer_neurons  ", output_layer_neurons )
-            print("-----------")
-            self.hidden_layer_weight, self.output_layer_weight = self._backprop(self.hidden_layer_weight, self.output_layer_weight, 
+            # perform forward propagation
+            hidden_layer_neurons, output_layer_neurons = self.__forward_prop(self.hidden_layer_weight, self.output_layer_weight, attribute_vector)
+            prev_hidden_layer_weight = self.hidden_layer_weight
+            prev_output_layer_weight = self.output_layer_weight
+            # perform backpropagation erorr
+            self.hidden_layer_weight, self.output_layer_weight = self.__backprop(self.hidden_layer_weight, self.output_layer_weight, 
+                       
                                                                 output_layer_neurons,target_vector , hidden_layer_neurons, attribute_vector)
+        self.n_epochs += 1
 
-        return hidden_layer_weight, output_layer_weight
-
-
-    # TO DO: A complete train -- require tolerance when to stop training
-    def training(self, dataset):
-        return 
-
-    def get_classification(self):
-        return self.__get_classification(self.output_neurons)
-
-    def print_weights(self):
-        #or output to file?? idk what to call this one
-        pass
+        while  not (self.__is_change_negligible(prev_hidden_layer_weight, self.hidden_layer_weight) and
+                        self.__is_change_negligible(prev_output_layer_weight, self.output_layer_weight)):
+            
+            ##stuck in stagnation -- exceed the allowable running time 
+            # if(self.n_epochs == 100):
+            #     self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_inputs)] for i in range(self.__n_hidden_nodes)]
+            #     self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_hidden_nodes)] for i in range(self.__n_outputs)]
     
+            # works as expected
+            if(self.n_epochs == 250):
+                break
+            self.__train(dataset)
+           
+        
+        return self.hidden_layer_weight, self.output_layer_weight
+
+    
+    # return true when all weights get ~0 
+    def __is_change_negligible(self, old_weights, new_weights): 
+        difference = abs(old_weights - new_weights)
+        # print("different....")
+        # print(difference)
+        for row in difference:
+            for el in row: 
+                
+                if el > sys.float_info.epsilon :
+                # if np.testing.assert_array_almost_equal(el, sys.float_info.epsilon, decimal=6, err_msg='', verbose=True):
+                    return False
+        return True
+
+
 
     # Return the label of each example 
     def __get_label(self, example):
@@ -65,8 +97,8 @@ class mlp:
 
         return target_vec
 
-    # Return (hidden_weight, output_weights) and (hidden_neurons, output_neurons)
-    def _forward_prop(self, hidden_layer, output_layer, attribute_vector):
+    # Return hidden and ouput neurons of multi_percentrons
+    def __forward_prop(self, hidden_layer, output_layer, attribute_vector):
         hidden_layer_output = []
         output_layer_output= []
         
@@ -97,25 +129,23 @@ class mlp:
         return 1/(1 + math.pow(math.e, -swixi))
 
     
-    def _backprop(self, hidden_layer_weight, output_layer_weight, output_layer_neurons, target_vector, hidden_layer_neurons, attribute_vector, eta=0.1):
-        hidden_layer_weight = np.array(hidden_layer_weight)
-        output_layer_weight = np.array(output_layer_weight)
-        output_layer_neurons = np.array(output_layer_neurons)
-        target_vector = np.array(target_vector)
-        hidden_layer_neurons = np.array(hidden_layer_neurons)
-        attribute_vector = np.array(attribute_vector)
-        # num_hid = self.__n_hidden_nodes
-        # num_out = self.__n_outputs
-
+    def __backprop(self, hidden_layer_weight, output_layer_weight, output_layer_neurons, target_vector, hidden_layer_neurons, attribute_vector, eta=0.1):
+        hidden_layer_weight = np.array(hidden_layer_weight, dtype=np.float)
+        output_layer_weight = np.array(output_layer_weight, dtype=np.float)
+        output_layer_neurons = np.array(output_layer_neurons,dtype=np.float)
+        target_vector = np.array(target_vector,dtype=np.float)
+        hidden_layer_neurons = np.array(hidden_layer_neurons,dtype=np.float)
+        attribute_vector = np.array(attribute_vector,dtype=np.float)
+    
         num_hid = hidden_layer_neurons.size
         num_in = self.__n_inputs 
         
         output_responsibility = np.multiply(np.multiply(output_layer_neurons, (1 - output_layer_neurons)), (target_vector - output_layer_neurons))
         hidden_responsibility = np.multiply(np.multiply(hidden_layer_neurons, (1 - hidden_layer_neurons)), output_responsibility.dot(output_layer_weight))
-        print('hidden_responsibility ', hidden_responsibility)
+        # print('hidden_responsibility ', hidden_responsibility)
 
         output_layer_weight = output_layer_weight + eta*np.multiply(np.array([output_responsibility,]*num_hid).transpose(), hidden_layer_neurons)
-        print('output_layer_weight ', output_layer_weight)
+        # print('output_layer_weight ', output_layer_weight)
 
         hidden_layer_weight = hidden_layer_weight + eta*np.multiply(np.array([hidden_responsibility,]*num_in).transpose(), attribute_vector)
 
@@ -123,32 +153,28 @@ class mlp:
 
 
 
-    # def _backprop(self, hidden_layer, output_layer, output_vector, target_vector, hidden_vector, attribute_vector, eta=0.1):
-    #     hidden_layer = np.array(hidden_layer)
-    #     output_layer = np.array(output_layer)
-    #     output_vector = np.array(output_vector)
-    #     target_vector = np.array(target_vector)
-    #     hidden_vector = np.array(hidden_vector)
-    #     attribute_vector = np.array(attribute_vector)
-    #     num_hid = self.__n_hidden_nodes
-    #     num_out = self.__n_outputs
-
-    #     print("shape ", hidden_vector.shape)
-    #     print("hidden layer ", hidden_layer)
-    #     print("output layer ", output_layer)
-
-    #     output_responsibility = np.outer(np.outer(output_vector, (1 - output_vector)), (target_vector - output_vector))
-    #     hidden_responsibility = np.outer(np.outer(hidden_vector, (1 - hidden_vector)), output_responsibility.dot(output_layer))
-
-    #     output_layer = output_layer + eta*np.outer(np.array([output_responsibility,]*num_hid).transpose(), hidden_vector)
-    #     hidden_layer = hidden_layer + eta*np.outer(np.array([hidden_responsibility,]*num_out).transpose(), attribute_vector)
-
-    #     return hidden_layer, output_layer
+    # def _mean_squared_error(self,output_vec, target_vec):
+    #     sum = 0
+    #     for i in range(len(target_vec)):
+    #         sum += (target_vec[i] - output_vec[i])** 2
+    #     return sum * 1/len(target_vec)
 
 
-    def __get_classification(self, output_neurons):
+    def __get_classification(self,example):
         # classifier chooses the class whose output neuron has return the highest value 
+        [hidden_neurons, output_neurons] = self.__forward_prop(self.hidden_layer_weight, self.output_layer_weight, example[1:len(example)-2])
+        print('the classification for this example is ...',output_neurons.index(max(output_neurons)) + 1 )
         return output_neurons.index(max(output_neurons)) + 1
+
+    # return the accuracy of the 
+    def __get_accuracy(self, dataset):
+        correct = 0
+        for example in dataset:
+            if example[len(dataset[0]) - 1] == self.get_classification(example):
+                correct += 1
+
+        return correct / len(dataset)
+
 
 if __name__ == "__main__":
     # Testing forward propagation
@@ -195,7 +221,11 @@ if __name__ == "__main__":
 
  
    
+    # test mlp()
+    data = [10, 63, 36, 74, 9, 16, 77, 92, 62, 54, 58, 3]
+    MLP = mlp(8, 8)
+    
+    print(MLP.get_classification(data))
 
 
-
-    MLP = mlp(5, 8)
+    
