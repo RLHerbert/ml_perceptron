@@ -15,24 +15,30 @@ class mlp:
         # initial weights 
         self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_inputs)] for i in range(self.__n_hidden_nodes)]
         self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_hidden_nodes)] for i in range(self.__n_outputs)]
+
         # number of epochs
         self.n_epochs = 0
         # multipercentron weights after training
         self.training_weights = self.__train(get_vectors()['training'])
-               
+        # correct class count
+        self.correct_class = 0
 
 
     # return the classification of each test example
     def get_classification(self, example):
         return self.__get_classification(example)
 
+   
     # TODO
     def print_weights(self):
         #or output to file?? idk what to call this one
-        pass
+        print("-------hidden layer weight------------")
+        print(self.hidden_layer_weight)
+        print("-------output layer weight -----------")
+        print(self.output_layer_weight)
 
 
-    
+    # return the multiperceptron weights
     def __train(self, dataset):
         for example in dataset:       
             attribute_vector = example[1:len(example)-1]
@@ -58,7 +64,7 @@ class mlp:
             #     self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_hidden_nodes)] for i in range(self.__n_outputs)]
     
             # works as expected
-            if(self.n_epochs == 250):
+            if(self.n_epochs == 800):
                 break
             self.__train(dataset)
            
@@ -69,13 +75,10 @@ class mlp:
     # return true when all weights get ~0 
     def __is_change_negligible(self, old_weights, new_weights): 
         difference = abs(old_weights - new_weights)
-        # print("different....")
         # print(difference)
         for row in difference:
             for el in row: 
-                
                 if el > sys.float_info.epsilon :
-                # if np.testing.assert_array_almost_equal(el, sys.float_info.epsilon, decimal=6, err_msg='', verbose=True):
                     return False
         return True
 
@@ -90,10 +93,11 @@ class mlp:
     def __getTarget_vec(self, example):
         target_vec = [0 for i in range(0, 8)]
         example_label = self.__get_label(example)
-        target_vec[example_label-1] = 0.8
-        for i in range(len(target_vec)):
+        target_vec[example_label] = 0.8
+        for i in range(len(target_vec)): 
             if target_vec[i] == 0:
                 target_vec[i] = 0.2
+        
 
         return target_vec
 
@@ -151,45 +155,40 @@ class mlp:
 
         return hidden_layer_weight, output_layer_weight
 
-
-
-    # def _mean_squared_error(self,output_vec, target_vec):
-    #     sum = 0
-    #     for i in range(len(target_vec)):
-    #         sum += (target_vec[i] - output_vec[i])** 2
-    #     return sum * 1/len(target_vec)
-
-
+    
+    # return classification for the example
     def __get_classification(self,example):
+        
         # classifier chooses the class whose output neuron has return the highest value 
-        [hidden_neurons, output_neurons] = self.__forward_prop(self.hidden_layer_weight, self.output_layer_weight, example[1:len(example)-2])
-        print('the classification for this example is ...',output_neurons.index(max(output_neurons)) + 1 )
-        return output_neurons.index(max(output_neurons)) + 1
+        # [hidden_neurons, output_neurons] = self.__forward_prop(self.hidden_layer_weight, self.output_layer_weight, example[1:len(example)-2])
+        [hidden_neurons, output_neurons] = self.__forward_prop(self.training_weights[0], self.training_weights[1], example[1:len(example)-2])
+        
+        if output_neurons.index(max(output_neurons)) == self.__get_label(example):
+            self.correct_class += 1
+        
+        print("classification for this example is  ", output_neurons.index(max(output_neurons)))
+
+        return output_neurons.index(max(output_neurons))
 
     # return the accuracy of the 
-    def __get_accuracy(self, dataset):
-        correct = 0
-        for example in dataset:
-            if example[len(dataset[0]) - 1] == self.get_classification(example):
-                correct += 1
-
-        return correct / len(dataset)
+    def get_accuracy(self, dataset):
+        return self.correct_class / len(dataset)
 
 
-if __name__ == "__main__":
-    # Testing forward propagation
-    # Example from book, table 5.1. slighty off due to rounding i think, but it shouldn't matter
-    hidden_layer_weight = [
-        [-1.0, 0.5],
-        [0.1, 0.7]
-    ]
+# if __name__ == "__main__":
+#     # Testing forward propagation
+#     # Example from book, table 5.1. slighty off due to rounding i think, but it shouldn't matter
+#     hidden_layer_weight = [
+#         [-1.0, 0.5],
+#         [0.1, 0.7]
+#     ]
 
-    output_layer_weight = [
-        [0.9, 0.5],
-        [-0.3, -0.1]
-    ]
+#     output_layer_weight = [
+#         [0.9, 0.5],
+#         [-0.3, -0.1]
+#     ]
 
-    attribute_vector = [0.8, 0.1]
+#     attribute_vector = [0.8, 0.1]
 
     # MLP = mlp(2,2)
     # forward_prop_results =  MLP._forward_prop(hidden_layer_weight, output_layer_weight, attribute_vector)
@@ -219,11 +218,12 @@ if __name__ == "__main__":
 
  
    
-    # test mlp()
-    data = [10, 63, 36, 74, 9, 16, 77, 92, 62, 54, 58, 3]
-    MLP = mlp(8, 8)
+    # # test mlp()
+    # # data = [100, 53, 69, 43, 86, 63, 0, 57, 12, 52, 44, 2]
+    # MLP = mlp(2, 8)
     
-    print(MLP.get_classification(data))
+    
+    # print(MLP.get_classification(data))
 
 
     
