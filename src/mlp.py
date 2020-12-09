@@ -16,6 +16,7 @@ class mlp:
         # initial weights 
         self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_inputs)] for i in range(self.__n_hidden_nodes)]
         self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_hidden_nodes)] for i in range(self.__n_outputs)]
+        self.initial_weights = [self.hidden_layer_weight, self.output_layer_weight]
 
         # number of epochs
         self.n_epochs = 0
@@ -33,9 +34,15 @@ class mlp:
     # TODO
     def print_weights(self):
         #or output to file?? idk what to call this one
-        print("-------hidden layer weight------------")
+       
+        print("--------Initial hidden layer weight-----------")
+        print(self.initial_weights[0])
+        print("--------Initial output layer weight-----------")
+        print(self.initial_weights[1])
+
+        print("-------Final hidden layer weight------------")
         print(self.hidden_layer_weight)
-        print("-------output layer weight -----------")
+        print("-------Final output layer weight -----------")
         print(self.output_layer_weight)
 
 
