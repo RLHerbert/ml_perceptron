@@ -35,15 +35,22 @@ class mlp:
         #or output to file?? idk what to call this one
        
         print("--------Initial hidden layer weight-----------")
-        print(self.initial_weights[0])
+        for i in range(len(self.initial_weights[0])):
+            print("Initial weights of hidden node", i, ":", self.initial_weights[0][i])
         print("--------Initial output layer weight-----------")
-        print(self.initial_weights[1])
+        for i in range(len(self.initial_weights[1])):
+            print("Initial weights of output node", i, ":", self.initial_weights[1][i])
 
         print("-------Final hidden layer weight------------")
-        print(self.hidden_layer_weight)
+        for i in range(len(self.hidden_layer_weight)):
+            print("Final weights of hidden node", i, ":", self.hidden_layer_weight[i])
         print("-------Final output layer weight -----------")
-        print(self.output_layer_weight)
+        for i in range(len(self.output_layer_weight)):
+            print("Final weights of output node", i, ":", self.output_layer_weight[i])
 
+    def print_epochs(self):
+        print("-------Epochs------------")
+        print(self.n_epochs)
 
     # return the multiperceptron weights
     def __train(self, dataset):
