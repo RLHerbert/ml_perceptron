@@ -7,9 +7,10 @@ import sys
 
 
 class mlp:
-    def __init__(self, n_hidden_nodes, n_outputs):
-        data = get_vectors()["training"]
+    def __init__(self, n_hidden_nodes, n_outputs, data):
+        # data = get_vectors()["training"]
         self.__n_inputs = len(data[0]) - 2
+        # self.__n_inputs = n_inputs
         self.__n_outputs = n_outputs
         self.__n_hidden_nodes = n_hidden_nodes
         # initial weights 
@@ -20,7 +21,7 @@ class mlp:
         # number of epochs
         self.n_epochs = 0
         # multipercentron weights after training
-        self.training_weights = self.__train(get_vectors()['training'])
+        self.training_weights = self.__train(data) #get_vectors()['training'])
         # correct class count
         self.correct_class = 0
 
@@ -150,10 +151,10 @@ class mlp:
     def __backprop(self, hidden_layer_weight, output_layer_weight, output_layer_neurons, target_vector, hidden_layer_neurons, attribute_vector, eta=0.1):
         hidden_layer_weight = np.array(hidden_layer_weight, dtype=np.float)
         output_layer_weight = np.array(output_layer_weight, dtype=np.float)
-        output_layer_neurons = np.array(output_layer_neurons,dtype=np.float)
-        target_vector = np.array(target_vector,dtype=np.float)
-        hidden_layer_neurons = np.array(hidden_layer_neurons,dtype=np.float)
-        attribute_vector = np.array(attribute_vector,dtype=np.float)
+        output_layer_neurons = np.array(output_layer_neurons, dtype=np.float)
+        target_vector = np.array(target_vector, dtype=np.float)
+        hidden_layer_neurons = np.array(hidden_layer_neurons, dtype=np.float)
+        attribute_vector = np.array(attribute_vector, dtype=np.float)
     
         num_hid = hidden_layer_neurons.size
         num_in = self.__n_inputs 
