@@ -6,7 +6,7 @@ def main():
     print("***EXECUTION INITIATED***")
     # train the data
     training_data = get_vectors()['training1and2']
-    # create MLP    
+    # create MLP with 12 hidden nodes and 8 output nodes
     MLP = mlp(12, 8, training_data)
     # test the holdout set
     holdout_data = get_vectors()['holdout']
@@ -14,6 +14,7 @@ def main():
         MLP.get_classification(example)
 
     print()
+    # printing the weights and the epochs
     MLP.print_weights()
     MLP.print_epochs()
         

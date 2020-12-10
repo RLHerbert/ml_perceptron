@@ -5,10 +5,8 @@ from data import get_vectors
 import sys
 
 
-
 class mlp:
     def __init__(self, n_hidden_nodes, n_outputs, data):
-        # data = get_vectors()["training"]
         self.__n_inputs = len(data[0]) - 2
         # self.__n_inputs = n_inputs
         self.__n_outputs = n_outputs
@@ -21,7 +19,7 @@ class mlp:
         # number of epochs
         self.n_epochs = 0
         # multipercentron weights after training
-        self.training_weights = self.__train(data) #get_vectors()['training'])
+        self.training_weights = self.__train(data)
         # correct class count
         self.correct_class = 0
 
@@ -30,7 +28,7 @@ class mlp:
     def get_classification(self, example):
         return self.__get_classification(example)
 
-   
+   # prints the initial and final weights of the hidden and output nodes
     def print_weights(self):
 
         print("--------Initial hidden layer weight-----------")
@@ -47,6 +45,7 @@ class mlp:
         for i in range(len(self.output_layer_weight)):
             print("Final weights of output node", i, ":\n", self.output_layer_weight[i], "\n")
 
+    # prints the number of epochs
     def print_epochs(self):
         print("-------Epochs------------")
         print(self.n_epochs)
@@ -142,10 +141,12 @@ class mlp:
 
         return hidden_layer_output, output_layer_output
 
+    # logistic function
     def __sigmoid(self, swixi):
         return 1/(1 + math.pow(math.e, -swixi))
 
-    
+
+    #performs the backpropagation
     def __backprop(self, hidden_layer_weight, output_layer_weight, output_layer_neurons, target_vector, hidden_layer_neurons, attribute_vector, eta=0.1):
         hidden_layer_weight = np.array(hidden_layer_weight, dtype=np.float)
         output_layer_weight = np.array(output_layer_weight, dtype=np.float)
