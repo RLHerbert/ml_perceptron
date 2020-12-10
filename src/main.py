@@ -9,7 +9,7 @@ def main():
     # train the data
     data = get_vectors()['training1and2']
     # create MLP    
-    MLP = mlp(5, 8, data)
+    MLP = mlp(12, 8, data)
     # test the holdout set
     data = get_vectors()['holdout']
     for example in data: 

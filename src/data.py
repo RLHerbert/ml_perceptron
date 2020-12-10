@@ -6,8 +6,8 @@ class trainingSet(Enum):
     TRAIN1AND2 = 3
 
 def get_vectors():
-    vector_dict = {"training": training(trainingSet.TRAIN1.value), 
-    "training1": training(trainingSet.TRAIN2.value), 
+    vector_dict = {"training1": training(trainingSet.TRAIN1.value),
+    "training2": training(trainingSet.TRAIN2.value),
     "training1and2": training(trainingSet.TRAIN1AND2.value), "holdout": holdout()}
     return vector_dict
 
