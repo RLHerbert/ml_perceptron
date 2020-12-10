@@ -18,7 +18,7 @@ def main():
     MLP.print_weights()
     MLP.print_epochs()
         
-    # TO DO: Validation
+    #Validation
     print("----------Validation----------")
     accuracy_rate = MLP.get_accuracy(holdout_data)
     error_rate = 1 - accuracy_rate
