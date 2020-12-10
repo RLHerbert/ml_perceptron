@@ -31,23 +31,21 @@ class mlp:
         return self.__get_classification(example)
 
    
-    # TODO
     def print_weights(self):
-        #or output to file?? idk what to call this one
-       
+
         print("--------Initial hidden layer weight-----------")
         for i in range(len(self.initial_weights[0])):
-            print("Initial weights of hidden node", i, ":", self.initial_weights[0][i])
-        print("--------Initial output layer weight-----------")
+            print("Initial weights of hidden node", i, ":\n", self.initial_weights[0][i], "\n")
+        print("\n--------Initial output layer weight-----------")
         for i in range(len(self.initial_weights[1])):
-            print("Initial weights of output node", i, ":", self.initial_weights[1][i])
+            print("Initial weights of output node", i, ":\n", self.initial_weights[1][i], "\n")
 
-        print("-------Final hidden layer weight------------")
+        print("\n-------Final hidden layer weight------------")
         for i in range(len(self.hidden_layer_weight)):
-            print("Final weights of hidden node", i, ":", self.hidden_layer_weight[i])
-        print("-------Final output layer weight -----------")
+            print("Final weights of hidden node", i, ":\n", self.hidden_layer_weight[i], "\n")
+        print("\n-------Final output layer weight -----------")
         for i in range(len(self.output_layer_weight)):
-            print("Final weights of output node", i, ":", self.output_layer_weight[i])
+            print("Final weights of output node", i, ":\n", self.output_layer_weight[i], "\n")
 
     def print_epochs(self):
         print("-------Epochs------------")
