@@ -25,7 +25,7 @@ def main():
     MLP.print_rates_for_class(2, holdout_data + training_data)
     accuracy_rate = MLP.get_accuracy(holdout_data)
     error_rate = 1 - accuracy_rate
-    print()
+    print("MLP Accuracy and Error Rates:")
     print("Accuracy rate =", accuracy_rate)
     print("Error rate =", error_rate)
 
