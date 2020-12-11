@@ -20,8 +20,7 @@ class mlp:
         self.n_epochs = 0
         # multipercentron weights after training
         self.training_weights = self.__train(data)
-        # correct class count
-        self.correct_class = 0
+
 
 
     # return the classification of each test example
@@ -49,6 +48,49 @@ class mlp:
     def print_epochs(self):
         print("-------Epochs------------")
         print(self.n_epochs)
+
+    # calculates precision, recall, sensitivity and specificity for a given class
+    def print_rates_for_class(self, label, data):
+        true_pos = 0
+        true_neg = 0
+        false_pos = 0
+        false_neg = 0
+        for example in data:
+            # When an example is that given label, and the classifier says it is as well
+            if label == self.__get_label(example) and self.get_classification(example) == label:
+                true_pos += 1
+            # When an example is that given label, but the classifier says it is not that label
+            elif label == self.__get_label(example) and self.get_classification(example) != label:
+                false_neg += 1
+            # When an example is not that given label, but the classifier says it is that label
+            elif label != self.__get_label(example) and self.get_classification(example) == label:
+                false_pos += 1
+            # When an example is not that given label, and the classifiers agrees that it is not that label as well
+            elif label != self.__get_label(example) and self.get_classification(example) != label:
+                true_neg += 1
+
+        print("-----Rates for class:", label, "-----")
+        # print precision
+        if true_pos + false_pos > 0:
+            print("Precision:", true_pos / (true_pos + false_pos), "\n")
+        else:
+            print("Precision:", 0, "\n")
+        # print recall
+        if true_pos + false_neg > 0:
+            print("Recall:", true_pos / (true_pos + false_neg), "\n")
+        else:
+            print("Recall:", 0, "\n")
+        # print sensitivity
+        if true_pos + false_neg > 0:
+            print("Sensitivity:", true_pos / (true_pos + false_neg), "\n")
+        else:
+            print("Sensitivity:", 0, "\n")
+        # print specificity
+        if true_neg + false_pos > 0:
+            print("Specificity:", true_neg / (true_neg + false_pos), "\n")
+        else:
+            print("Specificity:", 0, "\n")
+
 
     # return the multiperceptron weights
     def __train(self, dataset):
@@ -176,17 +218,19 @@ class mlp:
         # classifier chooses the class whose output neuron has return the highest value 
         # [hidden_neurons, output_neurons] = self.__forward_prop(self.hidden_layer_weight, self.output_layer_weight, example[1:len(example)-2])
         [hidden_neurons, output_neurons] = self.__forward_prop(self.training_weights[0], self.training_weights[1], example[1:len(example)-2])
+
         
-        if output_neurons.index(max(output_neurons)) == self.__get_label(example):
-            self.correct_class += 1
-        
-        print("classification for this example is  ", output_neurons.index(max(output_neurons)))
+        # print("classification for this example is  ", output_neurons.index(max(output_neurons)))
 
         return output_neurons.index(max(output_neurons))
 
     # return the accuracy of the 
     def get_accuracy(self, dataset):
-        return self.correct_class / len(dataset)
+        num_correct = 0
+        for example in dataset:
+            if self.get_classification(example) == self.__get_label(example):
+                num_correct += 1
+        return num_correct / len(dataset)
 
 
 # if __name__ == "__main__":

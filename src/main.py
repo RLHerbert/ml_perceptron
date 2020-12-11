@@ -20,10 +20,15 @@ def main():
         
     #Validation
     print("----------Validation----------")
+    print("Confusion Matrix Rates:")
+    MLP.print_rates_for_class(3, holdout_data + training_data)
+    MLP.print_rates_for_class(2, holdout_data + training_data)
     accuracy_rate = MLP.get_accuracy(holdout_data)
     error_rate = 1 - accuracy_rate
+    print()
     print("Accuracy rate =", accuracy_rate)
     print("Error rate =", error_rate)
+
 
 if __name__ == "__main__":
     main()
