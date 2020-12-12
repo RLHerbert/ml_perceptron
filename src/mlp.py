@@ -1,3 +1,11 @@
+"""
+mlp.py - mlp class that encapsulates all the data and functions of the mlp
+
+Dennis La - Dennis.La@student.csulb.edu
+Melissa Hazlewood - Melissa.Hazlewood@student.csulb.edu
+Rowan Herbert - Rowan.Herbert@student.csulb.edu
+Sophanna Ek - Sophanna.Ek@student.csulb.edu
+"""
 import math
 import numpy as np
 from random import uniform

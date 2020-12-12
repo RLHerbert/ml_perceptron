@@ -1,3 +1,11 @@
+"""
+data.py - Provides access the data sets
+
+Dennis La - Dennis.La@student.csulb.edu
+Melissa Hazlewood - Melissa.Hazlewood@student.csulb.edu
+Rowan Herbert - Rowan.Herbert@student.csulb.edu
+Sophanna Ek - Sophanna.Ek@student.csulb.edu
+"""
 from enum import Enum
 
 class trainingSet(Enum):

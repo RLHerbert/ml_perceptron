@@ -1,3 +1,12 @@
+"""
+main.py - The entry point of the project. Prints out all the output
+for the project
+
+Dennis La - Dennis.La@student.csulb.edu
+Melissa Hazlewood - Melissa.Hazlewood@student.csulb.edu
+Rowan Herbert - Rowan.Herbert@student.csulb.edu
+Sophanna Ek - Sophanna.Ek@student.csulb.edu
+"""
 from mlp import mlp
 from data import get_vectors, trainingSet, training
 
