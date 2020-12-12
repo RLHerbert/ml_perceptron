@@ -12,8 +12,6 @@
       - The entry point to the program.
     - `mlp.py`
       - Contains the *multi layer perceptron* `mlp` class and handles its instantiation as well as forward and backward propogation of training vectors and error respectively.
-    - `test.py`
-      - Contains unit tests for the project.
     - `res/`
       - `data.txt`
         - Contains the raw data vectors.
