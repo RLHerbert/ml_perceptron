@@ -20,12 +20,21 @@ def main():
         
     #Validation
     print("----------Validation----------")
-    print("Confusion Matrix Rates:")
-    MLP.print_rates_for_class(3, holdout_data + training_data)
-    MLP.print_rates_for_class(2, holdout_data + training_data)
+    validation_set = get_vectors()['training2']
+    print("\nConfusion Matrix Rates on Holdout:")
+    MLP.print_rates_for_class(3, holdout_data)
+    MLP.print_rates_for_class(2, holdout_data)
+    print("\nConfusion Matrix Rates on Validation Set:")
+    MLP.print_rates_for_class(3, validation_set)
+    MLP.print_rates_for_class(2, validation_set)
     accuracy_rate = MLP.get_accuracy(holdout_data)
     error_rate = 1 - accuracy_rate
-    print("MLP Accuracy and Error Rates:")
+    print("MLP Accuracy and Error Rates for Holdout:")
+    print("Accuracy rate =", accuracy_rate)
+    print("Error rate =", error_rate)
+    accuracy_rate = MLP.get_accuracy(validation_set)
+    error_rate = 1 - accuracy_rate
+    print("\nMLP Accuracy and Error Rates for Validation:")
     print("Accuracy rate =", accuracy_rate)
     print("Error rate =", error_rate)
 
