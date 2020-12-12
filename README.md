@@ -38,4 +38,4 @@ Follow these steps to run the program:
 #
 ## Features
 
-This project features a multilayer perceptron classifier which utilizes forward propogation training and backward propogation error correction to classify the provided data set.
+This project features a multilayer perceptron classifier which utilizes forward propogation training and backward propogation error correction to classify the provided data set. The program shows the initial and final hidden and output weights. It also outputs the precision, recall, sensitivity and specificity of a given class and the accuracy and error rates of the MLP in general.
