@@ -119,11 +119,6 @@ class mlp:
 
         while  not (self.__is_change_negligible(prev_hidden_layer_weight, self.hidden_layer_weight) and
                         self.__is_change_negligible(prev_output_layer_weight, self.output_layer_weight)):
-            
-            ##stuck in stagnation -- exceed the allowable running time 
-            # if(self.n_epochs == 100):
-            #     self.hidden_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_inputs)] for i in range(self.__n_hidden_nodes)]
-            #     self.output_layer_weight = [[uniform(-1.0, 1.0)  for i in range(self.__n_hidden_nodes)] for i in range(self.__n_outputs)]
     
             # works as expected
             if(self.n_epochs == 800):
@@ -137,7 +132,6 @@ class mlp:
     # return true when all weights get ~0 
     def __is_change_negligible(self, old_weights, new_weights): 
         difference = abs(old_weights - new_weights)
-        # print(difference)
         for row in difference:
             for el in row: 
                 if el > sys.float_info.epsilon :
@@ -147,7 +141,6 @@ class mlp:
 
 
     # Return the label of each example
-
     def __get_label(self, example):
         return example[len(example)-1]
 
@@ -210,10 +203,8 @@ class mlp:
         
         output_responsibility = np.multiply(np.multiply(output_layer_neurons, (1 - output_layer_neurons)), (target_vector - output_layer_neurons))
         hidden_responsibility = np.multiply(np.multiply(hidden_layer_neurons, (1 - hidden_layer_neurons)), output_responsibility.dot(output_layer_weight))
-        # print('hidden_responsibility ', hidden_responsibility)
 
         output_layer_weight = output_layer_weight + eta*np.multiply(np.array([output_responsibility,]*num_hid).transpose(), hidden_layer_neurons)
-        # print('output_layer_weight ', output_layer_weight)
 
         hidden_layer_weight = hidden_layer_weight + eta*np.multiply(np.array([hidden_responsibility,]*num_in).transpose(), attribute_vector)
 
@@ -224,11 +215,7 @@ class mlp:
     def __get_classification(self,example):
         
         # classifier chooses the class whose output neuron has return the highest value 
-        # [hidden_neurons, output_neurons] = self.__forward_prop(self.hidden_layer_weight, self.output_layer_weight, example[1:len(example)-2])
         [hidden_neurons, output_neurons] = self.__forward_prop(self.training_weights[0], self.training_weights[1], example[1:len(example)-2])
-
-        
-        # print("classification for this example is  ", output_neurons.index(max(output_neurons)))
 
         return output_neurons.index(max(output_neurons))
 
@@ -240,56 +227,3 @@ class mlp:
                 num_correct += 1
         return num_correct / len(dataset)
 
-
-# if __name__ == "__main__":
-#     # Testing forward propagation
-#     # Example from book, table 5.1. slighty off due to rounding i think, but it shouldn't matter
-#     hidden_layer_weight = [
-#         [-1.0, 0.5],
-#         [0.1, 0.7]
-#     ]
-
-#     output_layer_weight = [
-#         [0.9, 0.5],
-#         [-0.3, -0.1]
-#     ]
-
-#     attribute_vector = [0.8, 0.1]
-
-    # MLP = mlp(2,2)
-    # forward_prop_results =  MLP._forward_prop(hidden_layer_weight, output_layer_weight, attribute_vector)
-    # # Hidden node outputs
-    # print(forward_prop_results[0])
-    # # Output node outputs
-    # print(forward_prop_results[1])
-
-    # # Testing backpropagation
-    # # Example from Table 5.3 in Kubat
-    # hidden_layer = [ [-1.0, 1.0],
-    #                  [1.0, 1.0] ]
-
-    # output_layer = [ [1.0, 1.0],
-    #                  [-1.0, 1.0] ]
-
-    # output_vector = [0.65, 0.59]
-    # target_vector = [1.0, 0.0]
-    # hidden_vector = [0.12, 0.5]
-    # attribute_vector = [1.0, -1.0]
-
-    # backprop_results = MLP._backprop(hidden_layer, output_layer, output_vector, target_vector, hidden_vector, attribute_vector)
-    # # Hidden node outputs/weights
-    # print("hidden nodes: " ,backprop_results[0])
-    # # Output node outputs/weights
-    # print("output nodes: ", backprop_results[1])
-
- 
-   
-    # # test mlp()
-    # # data = [100, 53, 69, 43, 86, 63, 0, 57, 12, 52, 44, 2]
-    # MLP = mlp(2, 8)
-    
-    
-    # print(MLP.get_classification(data))
-
-
-    
