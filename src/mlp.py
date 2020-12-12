@@ -69,6 +69,9 @@ class mlp:
             elif label != self.__get_label(example) and self.get_classification(example) != label:
                 true_neg += 1
 
+        sensitivity = 0
+        specificity = 0
+
         print("-----Rates for class:", label, "-----")
         # print precision
         if true_pos + false_pos > 0:
@@ -82,14 +85,19 @@ class mlp:
             print("Recall:", 0, "\n")
         # print sensitivity
         if true_pos + false_neg > 0:
-            print("Sensitivity:", true_pos / (true_pos + false_neg), "\n")
+            sensitivity = true_pos / (true_pos + false_neg)
+            print("Sensitivity:", sensitivity, "\n")
         else:
             print("Sensitivity:", 0, "\n")
         # print specificity
         if true_neg + false_pos > 0:
-            print("Specificity:", true_neg / (true_neg + false_pos), "\n")
+            specificity = true_neg / (true_neg + false_pos)
+            print("Specificity:", specificity, "\n")
         else:
             print("Specificity:", 0, "\n")
+
+        print("Gmean:", math.sqrt(specificity * sensitivity), "\n")
+
 
 
     # return the multiperceptron weights
